@@ -1,3 +1,16 @@
+#container,#player{
+	position: absolute;
+}
+
+#player{
+	width: 20px;
+	height:20px;
+	display: inline-block;
+	border-radius: 50%;
+	background-color: black;
+}
+
+
 #gameTable {
 	border: 1px solid black;
 	border-collapse: collapse;

@@ -6,8 +6,9 @@ var engine = (function(){
 	var gameTable = document.getElementById("gameTable");
 	var matrix = [];
 	var pathLength = 0;
-
-    createMatrix();
+	var used = [];
+	var path = [];
+	var pathFound=undefined;
 
 	function createTable(){
 		var gameTable = document.getElementById("gameTable");
@@ -80,7 +81,6 @@ var engine = (function(){
         return true;
     }
 
-    var used = [];
     function fillUsedTable(){
     	
     	for(var i=0; i < matrixSize; i++) {
@@ -91,8 +91,6 @@ var engine = (function(){
 	    }
     }
 
-    var path = [];
-    var pathFound=undefined;
     function generatePath(x,y) {
     	if (pathFound) return true;
     	used[x][y] = true;
@@ -173,12 +171,15 @@ var engine = (function(){
     	}
     }
 
-    fillUsedTable();
-    generatePath(0,0);
-    console.log(pathFound.length);
-    drawPath();
-    createTable();
+	function start() {
+		createMatrix();
+		fillUsedTable();
+		generatePath(0,0);
+		drawPath();
+		createTable();
+	}
 
 	return {
+		start: start
     };
 }());
