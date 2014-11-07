@@ -1,6 +1,6 @@
 'use strict';
 
-var matrixSize = 10;
+var matrixSize = 3;
 
 var engine = (function(){
 	var gameTable = document.getElementById("gameTable");
@@ -9,6 +9,7 @@ var engine = (function(){
 	var used = [];
 	var path = [];
 	var pathFound=undefined;
+	var playerPosition = {x: 0, y: 0, color: 0};
 
 	function createTable(){
 		var gameTable = document.getElementById("gameTable");
@@ -17,7 +18,7 @@ var engine = (function(){
 
 			for(var j = 0; j < matrixSize; j++){
 				var td = document.createElement('td');
-				var text1 = document.createTextNode(
+				var text1 = document.createTextNode(//""+0
 					matrix[i][j] ? matrix[i][j]
 						: 0
 				);
@@ -31,11 +32,12 @@ var engine = (function(){
 				else if (!matrix[i][j])
 				{
 					color = randomIntFromInterval(1,6);
+					matrix[i][j]=color;
 				}
 				else
 				{
 					color=7;
-					//color = matrix[i][j];
+					color = matrix[i][j];
 				}
 				var red = (color & (1 << 0))!=0;
 				var green = (color & (1 << 1))!=0;
@@ -171,15 +173,42 @@ var engine = (function(){
     	}
     }
 
+	function movePlayer(x,y)
+	{
+		if (x==playerPosition.x && y==playerPosition.y)
+		{
+			return playerPosition.color;
+		}
+
+		if (x<0 || x>=matrixSize || y<0 || y>=matrixSize)
+		{
+			return playerPosition.color;
+		}
+
+		playerPosition.color=playerPosition.color^matrix[y][x];
+		playerPosition.x=x;
+		playerPosition.y=y;
+
+		console.log(matrix[y][x]);
+
+		return playerPosition.color;
+	}
+
 	function start() {
 		createMatrix();
 		fillUsedTable();
 		generatePath(0,0);
 		drawPath();
 		createTable();
+		playerPosition.x=0;
+		playerPosition.y=0;
+		playerPosition.color=matrix[0][0];
+		return playerPosition.color;
 	}
 
 	return {
-		start: start
+		start: start,
+		movePlayer: movePlayer,
+		matrixSize: matrixSize
     };
 }());
