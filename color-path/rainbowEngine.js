@@ -16,11 +16,30 @@ var engine = (function(){
 
 			for(var j = 0; j < matrixSize; j++){
 				var td = document.createElement('td');
-				var text1 = document.createTextNode(matrix[i][j]);
+				var text1 = document.createTextNode(
+					matrix[i][j] ? matrix[i][j]
+						: 0
+				);
 				td.appendChild(text1);
-				if (matrix[i][j]) {
-					td.setAttribute("class", "path");
+				td.setAttribute("id", "game-cell-"+i+"-"+j);
+				var color = -1;
+				if (i==matrixSize-1 && j==matrixSize-1)
+				{
+					color = 7;
 				}
+				else if (!matrix[i][j])
+				{
+					color = randomIntFromInterval(1,6);
+				}
+				else
+				{
+					color=7;
+					//color = matrix[i][j];
+				}
+				var red = (color & (1 << 0))!=0;
+				var green = (color & (1 << 1))!=0;
+				var blue = (color & (1 << 2))!=0;
+				td.setAttribute("style", "background-color: rgb("+red*255+","+green*255+","+blue*255+");");
 				tr.appendChild(td);
 			}
 		    gameTable.appendChild(tr);
@@ -31,28 +50,13 @@ var engine = (function(){
         for(var i=0; i < matrixSize; i++) {
             matrix[i] = [];
             for(var j=0; j < matrixSize; j++) {
-                matrix[i][j] = 0;
+                matrix[i][j] = undefined;
             }
         }
 	}
 
     function randomIntFromInterval(min,max) {
         return Math.floor(Math.random()*(max-min+1)+min);
-    }
-
-    function generateRandomPath(x1,y1,x2,y2) {
-        var pathLength = 0;
-        //get direction
-        while((x1!=x2)&(y1!=y2)) {
-            var rand = randomIntFromInterval(0,3);
-            console.log(rand);
-            if (isValidMove(x1,y1,rand)) 
-            {
-                matrix[x1][y1]=1;
-                pathLength++;
-            }
-            
-        }
     }
 
     function isValidMove(x,y,rand) {
@@ -138,18 +142,40 @@ var engine = (function(){
         return false;
     }
 
-    function drawPath(){
-    	for (var i=0; i<pathFound.length; i++){
+	//google copy/paste
+	function shuffle(o){
+		for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+		return o;
+	}
+
+	function generateColorArray(halfLength)
+	{
+		var output = [];
+		for (var i=0; i<halfLength;i++)
+		{
+			var color = randomIntFromInterval(1,6);
+			output.push(color);
+		}
+		output = shuffle(output);
+		var secondaryArray = shuffle(output);
+		return output.concat(secondaryArray);
+	}
+
+    function drawPath()
+	{
+		var halfLength=(pathFound.length-1)/2;
+		var colorArray = generateColorArray(halfLength);
+    	for (var i=0; i<pathFound.length-1; i++)
+		{
     		var x = pathFound[i].x;
     		var y = pathFound[i].y; 
-			matrix[x][y]=1;
-			$("tr td:nth-child("+ x +"), tr td:nth-child("+y+")").css('background-color', 'red');
+			matrix[x][y]=colorArray[i];
     	}
     }
 
     fillUsedTable();
     generatePath(0,0);
-    console.log(pathFound);
+    console.log(pathFound.length);
     drawPath();
     createTable();
 
