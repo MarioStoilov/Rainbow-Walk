@@ -8,7 +8,6 @@ var engine = (function(){
 	var pathLength = 0;
 
     createMatrix();
-	//test comment
 
 	function createTable(){
 		var gameTable = document.getElementById("gameTable");
@@ -19,6 +18,9 @@ var engine = (function(){
 				var td = document.createElement('td');
 				var text1 = document.createTextNode(matrix[i][j]);
 				td.appendChild(text1);
+				if (matrix[i][j]) {
+					td.setAttribute("class", "path");
+				}
 				tr.appendChild(td);
 			}
 		    gameTable.appendChild(tr);
