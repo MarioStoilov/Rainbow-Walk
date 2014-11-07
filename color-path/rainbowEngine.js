@@ -8,6 +8,7 @@ var engine = (function(){
 	var pathLength = 0;
 
     createMatrix();
+	//test comment
 
 	function createTable(){
 		var gameTable = document.getElementById("gameTable");
