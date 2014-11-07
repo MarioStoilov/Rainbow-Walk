@@ -26,3 +26,8 @@ td {
 {
 	background-color: red;
 }
+#hint{
+	float:right;
+	height: 300px;
+	width: 300px;
+}
