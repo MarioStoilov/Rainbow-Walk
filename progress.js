@@ -5,7 +5,8 @@ var progress = (function()
 {
     var progressObject = {
       piano: false,
-      rainbow:false
+      rainbow:false,
+      tower: 0
     };
 
     function getProgress()
@@ -27,6 +28,22 @@ var progress = (function()
 
         var rainbowImage = document.getElementById("progress-rainbow-walk");
         bindCurrentImage(rainbowImage, progress.rainbow);
+
+        var towerImage = document.getElementById("progress-icyTower");
+        bindTower(towerImage, progress.tower);
+    }
+
+    function bindTower(towerImage, score)
+    {
+        if (score==0)
+        {
+            towerImage.setAttribute("style", "opacity: 0.4; filter: alpha(opacity=40);")
+        }
+        else
+        {
+            towerImage.setAttribute("style", "")
+            towerImage.setAttribute("title", "score: "+score);
+        }
     }
 
     function bindCurrentImage(image, progress)
@@ -57,10 +74,19 @@ var progress = (function()
         bindProgress();
     }
 
+    function completeTower(score)
+    {
+        var progress = getProgress();
+        progress.tower=score;
+        localStorage.setItem('progressObject', JSON.stringify(progress));
+        bindProgress();
+    }
+
     return{
         getProgress: getProgress,
         bindProgress: bindProgress,
         completePiano: completePiano,
-        completeRainbow: completeRainbow
+        completeRainbow: completeRainbow,
+        completeTower: completeTower
     }
 }());
