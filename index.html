@@ -4,7 +4,7 @@
         <title>Rainbow Marshmellows</title>
     </head>
     <body>
-        <h1>Rainbow Marshmellows</h1>
+        <h1><a style="text-decoration: none"><font color=#ff0000>R</font><font color=#f2260c>a</font><font color=#e54b19>i</font><font color=#d86e26>n</font><font color=#cc8f33>b</font><font color=#bfad3f>o</font><font color=#b2c74c>w</font> <font color=#99ed66>M</font><font color=#8cf872>a</font><font color=#7ffe7f>r</font><font color=#72fe8c>s</font><font color=#66f899>h</font><font color=#59eca5>m</font><font color=#4cdcb2>e</font><font color=#3fc6bf>l</font><font color=#33accc>l</font><font color=#268ed8>o</font><font color=#196ce5>w</font><font color=#0c49f2>s</font></a></h1>
 		<script src="libs/jquery-1.9.1/jquery.js"></script>
         <script src="libs/jqueryui-1.10.3/jquery-ui.js"></script>
         <script src="libs/bootstrap.min.js"></script>
@@ -32,6 +32,7 @@
 	            <div id="player"></div>
        		</div>
 			<h2>Go to the white square with black color</h2>
+		    <div id="rainbow-status-div"></div>
 
 
         <script>
@@ -41,6 +42,7 @@
                 var j=0;
                 var playerColor =0;
                 playerColor= engine.start();
+				var complete=false;
 
                 positionPlayer(i,j);
                 function positionPlayer(i, j)
@@ -49,7 +51,6 @@
                     var player = document.getElementById("player");
                     var left = targetCell.offsetLeft;
                     var top = targetCell.offsetTop;
-                 //   debugger;
                     var color = engine.movePlayer(i,j);
                     var red = (color & (1 << 0))!=0;
                     var green = (color & (1 << 1))!=0;
@@ -57,10 +58,22 @@
 
                     player.setAttribute("style", "left: "+left+"px; top: "+top+"px;"+
                     "background-color: rgb("+red*255+","+green*255+","+blue*255+");");
-                    console.log("i "+ i);
-                    console.log("j "+ j);
+					if (i==matrixSize-1 && j==matrixSize-1)
+					{
+						if (color==0)
+						{
+							complete=true;
+							var statusDiv = document.getElementById("rainbow-status-div");
+							statusDiv.innerHTML ="Congratulations";
+						}
+					}
                 }
-                $("body").on("moveCommand", function(e) { 
+                $("body").on("moveCommand", function(e)
+				{
+					if (complete)
+					{
+						return;
+					}
                     console.log(e.direction); 
                     switch(e.direction) {
                         case "up":
@@ -161,6 +174,10 @@
 			    <h2 style="display: inline-block; float: left;">
 			    	Play the melody
 		    	</h2>
+				  <div class="melody-container">
+				  	<div id="piano-status-melody">hi</div>
+				  	<button onclick="pianoClass.playMelody()">Replay melody</button>
+				  </div>
 		      </div>
 		      <div class="tab-pane" id="messages">
 		      </div>

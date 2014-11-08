@@ -18,10 +18,7 @@ var engine = (function(){
 
 			for(var j = 0; j < matrixSize; j++){
 				var td = document.createElement('td');
-				var text1 = document.createTextNode(//""+0
-					matrix[i][j] ? matrix[i][j]
-						: 0
-				);
+				var text1 = document.createTextNode("");
 				td.appendChild(text1);
 				td.setAttribute("id", "game-cell-"+i+"-"+j);
 				var color = -1;

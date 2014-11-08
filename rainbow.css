@@ -32,3 +32,7 @@ td {
 	height: 300px;
 	width: 300px;
 }
+#rainbow-status-div
+{
+	clear: both;
+}

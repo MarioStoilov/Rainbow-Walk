@@ -77,3 +77,7 @@ audio {
   left: -10px;
   background-color: black;
 }
+.melody-container
+{
+  clear: both;
+}

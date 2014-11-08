@@ -91,9 +91,11 @@ var pianoClass = (function() {
 
   ];
 
-  playNotes(notes);
   function playNotes(notes) {
     var i = 0;
+    playing=true;
+    var statusDiv = document.getElementById("piano-status-melody");
+    statusDiv.innerHTML ="Playing melody...";
     playNextNote();
     function playNextNote()
     {
@@ -109,6 +111,11 @@ var pianoClass = (function() {
         press(value.key);
         i++;
         setTimeout(playNextNote, value.duration);
+      }
+      else
+      {
+        playing=false;
+        statusDiv.innerHTML ="Now, you try it.";
       }
     }
   }
@@ -192,11 +199,17 @@ var pianoClass = (function() {
   /* Register mouse event callbacks. */
   
   keys.forEach(function(key) {
-    $(pianoClass(key)).mousedown(function() {
+    $(pianoClass(key)).mousedown(function()
+    {
+      if (playing)
+      {
+        return;
+      }
       $(pianoClass(key)).animate({
         'backgroundColor': '#FF0000'
       }, 0);
       press(key);
+      validateKey(key);
     });
 
       $(pianoClass(key)).mouseup(function() {
@@ -212,14 +225,44 @@ var pianoClass = (function() {
   
   $(document).keydown(function(event)
   {
+    if (playing)
+    {
+      return;
+    }
     if (event.which === pedal) {
       sustaining = true;
       $(pianoClass('pedal')).addClass('piano-sustain');
     }
     var key = keys[codes.indexOf(event.which)];
-    melodie+=key+" ";
     press(keydown(event.which));
+    validateKey(key);
   });
+
+  function validateKey(key)
+  {
+    var statusDiv = document.getElementById("piano-status-melody");
+    if (playedNotes.length==notes.length)
+    {
+      statusDiv.innerHTML ="Congratulations, you did it!";
+    }
+    else
+    {
+      if (key==notes[playedNotes.length].key)
+      {
+        playedNotes.push(key);
+        statusDiv.innerHTML ="Your doing fine, keep it up!";
+      }
+      else
+      {
+        playedNotes=[];
+        statusDiv.innerHTML ="You made a mistake. Start over.";
+      }
+      if (playedNotes.length==notes.length)
+      {
+        statusDiv.innerHTML ="Congratulation, you did it!";
+      }
+    }
+  }
   
   $(document).keyup(function(event)
   {
@@ -245,8 +288,20 @@ var pianoClass = (function() {
     return melodie;
   }
 
+  var playedNotes = [];
+  var playing=false;
+  function playMelody()
+  {
+    if (playing)
+    {
+      return;
+    }
+    playNotes(notes);
+    playedNotes =[];
+  }
+
   return{
-    melodie: returnMelodie
+    playMelody: playMelody
   }
 
 })();
