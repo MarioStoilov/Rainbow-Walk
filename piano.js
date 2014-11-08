@@ -94,6 +94,9 @@ var pianoClass = (function() {
   function playNotes(notes) {
     var i = 0;
     playing=true;
+    var playButton = document.getElementById("piano-play-button");
+    playButton.innerHTML ="Replay melody";
+
     var statusDiv = document.getElementById("piano-status-melody");
     statusDiv.innerHTML ="Playing melody...";
     playNextNote();
@@ -225,7 +228,7 @@ var pianoClass = (function() {
   
   $(document).keydown(function(event)
   {
-    if (playing)
+    if (playing || activeTab!=1)
     {
       return;
     }
@@ -244,6 +247,9 @@ var pianoClass = (function() {
     if (playedNotes.length==notes.length)
     {
       statusDiv.innerHTML ="Congratulations, you did it!";
+      progress.completePiano();
+      var playButton = document.getElementById("piano-play-button");
+      playButton.disabled =true;
     }
     else
     {
@@ -260,6 +266,9 @@ var pianoClass = (function() {
       if (playedNotes.length==notes.length)
       {
         statusDiv.innerHTML ="Congratulation, you did it!";
+        progress.completePiano();
+        var playButton = document.getElementById("piano-play-button");
+        playButton.disabled =true;
       }
     }
   }
@@ -283,10 +292,6 @@ var pianoClass = (function() {
     }
   });
 
-  function returnMelodie()
-  {
-    return melodie;
-  }
 
   var playedNotes = [];
   var playing=false;

@@ -11,15 +11,17 @@
 
         <script src="controls.js"></script>
         <script src="rainbowEngine.js"></script>
+		<script src="progress.js"></script>
         <LINK href="libs/bootstrap.min.css" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="piano.css"/>
-                    <LINK href="rainbow.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="piano.css"/>
+		<LINK href="rainbow.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="progress.css"/>
       
 
 		<ul class="nav nav-tabs" id="myTab">
-		  <li class="active"><a href="#colorwalk">Color walk</a></li>
-		  <li><a href="#piano">Piano</a></li>
-		  <li><a href="#messages">Messages</a></li>
+		  <li class="active"><a href="#colorwalk" onclick="initColor()">Color walk</a></li>
+		  <li><a href="#piano" onclick="initPiano()">Piano</a></li>
+		  <li><a href="#progress" onclick="initProgress()">Progress</a></li>
 		</ul>
 
 		    <div id='content' class="tab-content">
@@ -48,6 +50,10 @@
                 function positionPlayer(i, j)
                 {
                     var targetCell = document.getElementById("game-cell-"+j+"-"+i);
+					if (!targetCell)
+					{
+						return;
+					}
                     var player = document.getElementById("player");
                     var left = targetCell.offsetLeft;
                     var top = targetCell.offsetTop;
@@ -65,28 +71,28 @@
 							complete=true;
 							var statusDiv = document.getElementById("rainbow-status-div");
 							statusDiv.innerHTML ="Congratulations";
+							progress.completeRainbow();
 						}
 					}
                 }
                 $("body").on("moveCommand", function(e)
 				{
-					if (complete)
+					if (complete || activeTab!=0)
 					{
 						return;
 					}
-                    console.log(e.direction); 
                     switch(e.direction) {
                         case "up":
                            j-1>=0 ? j-- : j = 0;
                            break;
                         case "down":
-                           j+1<=engine.matrixSize ? j++ : j=engine.matrixSize;
+                           j+1<engine.matrixSize ? j++ : j=engine.matrixSize-1;
                            break;
                         case "left":
                            i-1>=0 ? i-- : i = 0;
                            break;
                         case "right":
-                           i+1<=engine.matrixSize ? i++ : i=engine.matrixSize;
+                           i+1<engine.matrixSize ? i++ : i=engine.matrixSize-1;
                            break;   
                     }
                     positionPlayer(i,j);
@@ -175,20 +181,41 @@
 			    	Play the melody
 		    	</h2>
 				  <div class="melody-container">
-				  	<div id="piano-status-melody">hi</div>
-				  	<button onclick="pianoClass.playMelody()">Replay melody</button>
+				  	<div id="piano-status-melody"></div>
+				  	<button id="piano-play-button" onclick="pianoClass.playMelody()">Play melody</button>
 				  </div>
 		      </div>
-		      <div class="tab-pane" id="messages">
+		      <div class="tab-pane" id="progress">
+				  <img id="progress-rainbow-walk" class="progress-image" src="images/rainbow-walk.png">
+				  <img id="progress-piano" class="progress-image" src="images/piano.png">
 		      </div>
 		      <div class="tab-pane" id="settings"></div>
 		    </div>    
 
  		<script>
+
 			$('#myTab a').click(function (e) {
 			  e.preventDefault()
 			  $(this).tab('show')
-			})
+			});
+			progress.bindProgress();
+
+			var activeTab = 0;
+
+			function initColor()
+			{
+				activeTab=0;
+			}
+
+			function initPiano()
+			{
+				activeTab=1;
+			}
+
+			function initProgress()
+			{
+				activeTab=2;
+			}
 		</script>
     </body>
 </html>

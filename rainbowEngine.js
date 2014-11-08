@@ -186,8 +186,6 @@ var engine = (function(){
 		playerPosition.x=x;
 		playerPosition.y=y;
 
-		console.log(matrix[y][x]);
-
 		return playerPosition.color;
 	}
 
