@@ -17,6 +17,7 @@
 		<script src="scripts/playerDrawers.js"></script>
 		<script src="scripts/containers.js"></script>
 		<script src="scripts/gameContainer.js"></script>
+		<script src="scripts/fireworks.js"></script>
 		<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 		<!-- -->
 
@@ -43,8 +44,8 @@
 		<ul class="nav nav-tabs" id="myTab">
 		  <li class="active"><a href="#colorwalk" onclick="initColor()">Color walk</a></li>
 		  <li><a href="#piano" onclick="initPiano()">Piano</a></li>
-		  <li><a href="#tower" onclick="initTower()">Tower</a></li>
 		  <li><a href="#math" onclick="initMath()">Math Blaster</a></li>
+		  <li><a href="#tower" onclick="initTower()">Tower</a></li>
 		  <li><a href="#progress" onclick="initProgress()">Progress</a></li>
 		</ul>
 
@@ -272,7 +273,7 @@
 						  var operation = getRandomInt(0,3);
 						  var int1=1;
 						  var int2=2;
-						  if (operation==3)//speacial case for division
+						  if (operation==3 || operation==2)//speacial case for division
 						  {
 							  int2 = getRandomInt(1,10);
 							  int1 = int2*getRandomInt(1,10);

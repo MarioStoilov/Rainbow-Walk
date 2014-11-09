@@ -35,6 +35,11 @@ var progress = (function()
 
         var towerImage = document.getElementById("progress-icyTower");
         bindCurrentImageWithTitle(towerImage, progress.tower);
+
+        if (progress.piano && progress.math && progress.tower>0 && progress.rainbow>0 && !fireworksClass.fired())
+        {
+            fireworksClass.fire();
+        }
     }
 
     function bindCurrentImageWithTitle(towerImage, score)
