@@ -6,7 +6,8 @@ var progress = (function()
     var progressObject = {
       piano: false,
       rainbow:0,
-      tower: 0
+      tower: 0,
+      math:false
     };
 
     function getProgress()
@@ -25,6 +26,9 @@ var progress = (function()
 
         var pianoImage = document.getElementById("progress-piano");
         bindCurrentImage(pianoImage, progress.piano);
+
+        var mathImage = document.getElementById("progress-math");
+        bindCurrentImage(mathImage, progress.math);
 
         var rainbowImage = document.getElementById("progress-rainbow-walk");
         bindCurrentImageWithTitle(rainbowImage, progress.rainbow);
@@ -66,6 +70,14 @@ var progress = (function()
         bindProgress();
     }
 
+    function completeMath()
+    {
+        var progress = getProgress();
+        progress.math=true;
+        localStorage.setItem('progressObject', JSON.stringify(progress));
+        bindProgress();
+    }
+
     function completeRainbow(time)
     {
         var progress = getProgress();
@@ -87,6 +99,7 @@ var progress = (function()
         bindProgress: bindProgress,
         completePiano: completePiano,
         completeRainbow: completeRainbow,
-        completeTower: completeTower
+        completeTower: completeTower,
+        completeMath: completeMath
     }
 }());

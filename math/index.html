@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="move-style.css">
+</head>
+<body>
+
+<div id="div1"></div>
+<div id="div2"></div>
+<ul id="wrapper"></ul>
+
+
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="move.js"></script>
+<script>
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+    var int1 = getRandomInt(1,50);
+    var int2 = getRandomInt(1,50);
+
+    var res = int1 + int2; //todo: other operations
+  //  debugger;
+    var div1 = document.getElementById("div1");
+    var div2 = document.getElementById("div2");
+    div1.innerHTML = int1;
+    div2.innerHTML = int2;
+
+    var ul = document.getElementById("wrapper");
+    var liRes = document.createElement("li"); 
+    liRes.innerHTML = res;
+    ul.appendChild(liRes);
+    liRes.addEventListener('click', onElementClick);
+    for (var i = 0; i < 5; i++) {
+          var li = document.createElement("li"); 
+          var rand = getRandomInt(0,100);
+          var color = getRandomColor();
+          li.innerHTML = rand;
+          li.setAttribute("style", "background-color:"+color+";color:white;");
+          ul.appendChild(li);
+          li.addEventListener('click', onElementClick);
+    };
+  
+    function onElementClick(ev){
+        console.log(ev.target);
+        if (ev.target.innerHTML == (""+res)) {
+            alert("great success");
+        };
+    }
+</script>
+</body>
+</html>

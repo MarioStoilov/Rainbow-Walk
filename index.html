@@ -4,6 +4,7 @@
         <title>Rainbow Marshmellows</title>
 		<!-- -->
 		<link rel="stylesheet" type="text/css" href="styles/mainPage.css">
+		<link rel="stylesheet" type="text/css" href="math/move-style.css">
 		<script src="scripts/jquery-1.10.1.js"></script>
 		<script src="scripts/localStorageManager.js"></script>
 		<script src="scripts/oop.js"></script>
@@ -43,6 +44,7 @@
 		  <li class="active"><a href="#colorwalk" onclick="initColor()">Color walk</a></li>
 		  <li><a href="#piano" onclick="initPiano()">Piano</a></li>
 		  <li><a href="#tower" onclick="initTower()">Tower</a></li>
+		  <li><a href="#math" onclick="initMath()">Math Blaster</a></li>
 		  <li><a href="#progress" onclick="initProgress()">Progress</a></li>
 		</ul>
 
@@ -223,15 +225,118 @@
 		      <div class="tab-pane" id="progress">
 				  <img id="progress-rainbow-walk" class="progress-image" src="images/rainbow-walk.png">
 				  <img id="progress-piano" class="progress-image" src="images/piano.png">
+				  <img id="progress-math" class="progress-image" src="images/math.jpg">
 				  <hr>
 				  <img id="progress-icyTower" class="progress-image" src="images/icyTowerLogo.jpg">
 		      </div>
-				<div class="tab-pane" id="tower">
+			  <div class="tab-pane" id="tower">
 					<div data-root="${rootContext}">
 						<canvas tabindex="1" id="gameContainer" width="550" height="500">Your browser does not support canvas drawing. Get a new browser please!</canvas>
 						<script src="scripts/main.Js"></script>
 					</div>
 				</div>
+
+
+
+			  <div class="tab-pane" id="math">
+				  <div id="div1"></div>
+				  <ul id="wrapper"></ul>
+
+
+				  <script>
+					  function getRandomInt(min, max) {
+						  return Math.floor(Math.random() * (max - min + 1)) + min;
+					  }
+
+					  function getRandomColor() {
+						  var letters = '0123456789ABCDEF'.split('');
+						  var color = '#';
+						  for (var i = 0; i < 6; i++ ) {
+							  color += letters[Math.floor(Math.random() * 16)];
+						  }
+						  return color;
+					  }
+
+					  var res;
+
+					  var operations = [
+							  "+",
+							  "-",
+							  "*",
+							  "/"
+					  ];
+
+					  function startMathBlaster()
+					  {
+
+						  var operation = getRandomInt(0,3);
+						  var int1=1;
+						  var int2=2;
+						  if (operation==3)//speacial case for division
+						  {
+							  int2 = getRandomInt(1,10);
+							  int1 = int2*getRandomInt(1,10);
+
+						  }
+						  else if(operation==1)
+						  {
+							  int1 = getRandomInt(1,50);
+							  int2 = getRandomInt(1,int1);
+						  }
+						  else
+						  {
+							  int1 = getRandomInt(1,50);
+							  int2 = getRandomInt(1,50);
+						  }
+
+							switch (operation)
+							{
+								case 0:
+									res=int1+int2; break;
+								case 1:
+									res=int1-int2; break;
+								case 2:
+									res=int1*int2; break;
+								case 3:
+									res=int1/int2; break;
+							}
+
+						  //  debugger;
+						  var div1 = document.getElementById("div1");
+						  div1.innerHTML=int1+operations[operation]+int2+"=?";
+
+						  var ul = document.getElementById("wrapper");
+						  var liRes = document.createElement("li");
+						  liRes.innerHTML = res;
+						  ul.appendChild(liRes);
+						  liRes.addEventListener('click', onElementClick);
+						  for (var i = 0; i < 5; i++) {
+							  var li = document.createElement("li");
+							  var rand = getRandomInt(0,100);
+							  var color = getRandomColor();
+							  li.innerHTML = rand;
+							  li.setAttribute("style", "background-color:"+color+";color:white;");
+							  ul.appendChild(li);
+							  li.addEventListener('click', onElementClick);
+
+						  }
+						  $('#wrapper li').bounce({
+							  'speed': 7
+						  });
+
+					  }
+
+					  function onElementClick(ev){
+						  console.log(ev.target);
+						  if (ev.target.innerHTML == (""+res)) {
+							  var div1 = document.getElementById("div1");
+							  div1.innerHTML="Correct!"
+							  progress.completeMath();
+						  };
+					  }
+				  </script>
+				  <script type="text/javascript" src="math/move.js"></script>
+			  </div>
 		    </div>    
 
  		<script>
@@ -244,7 +349,7 @@
 				{
 					debugger;
 					var currentProgress = progress.getProgress();
-					if (!(currentProgress.piano && currentProgress.rainbow>0))
+					if (!(currentProgress.piano && currentProgress.rainbow>0 && currentProgress.math))
 					{
 						return;
 					}
@@ -271,9 +376,18 @@
 				activeTab=2;
 			}
 
-			function initProgress()
+			function initMath()
 			{
 				activeTab=3;
+				if (!progress.getProgress().math) {
+					setTimeout(startMathBlaster, 500);
+				}
+				//startMathBlaster();
+			}
+
+			function initProgress()
+			{
+				activeTab=4;
 			}
 		</script>
     </body>
