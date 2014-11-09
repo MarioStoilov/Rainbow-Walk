@@ -21,40 +21,24 @@
 
     </head>
     <body>
-        <h1><a style="text-decoration: none"><font color=#ff0000>R</font><font color=#f2260c>a</font><font color=#e54b19>i</font><font color=#d86e26>n</font><font color=#cc8f33>b</font><font color=#bfad3f>o</font><font color=#b2c74c>w</font> <font color=#99ed66>M</font><font color=#8cf872>a</font><font color=#7ffe7f>r</font><font color=#72fe8c>s</font><font color=#66f899>h</font><font color=#59eca5>m</font><font color=#4cdcb2>e</font><font color=#3fc6bf>l</font><font color=#33accc>l</font><font color=#268ed8>o</font><font color=#196ce5>w</font><font color=#0c49f2>s</font></a></h1>
+        <h1 id="mainHeader"><a style="text-decoration: none; font-size: 2.5em;"><font color=#ff0000>R</font><font color=#f2260c>a</font><font color=#e54b19>i</font><font color=#d86e26>n</font><font color=#cc8f33>b</font><font color=#bfad3f>o</font><font color=#b2c74c>w</font> <font color=#99ed66>M</font><font color=#8cf872>a</font><font color=#7ffe7f>r</font><font color=#72fe8c>s</font><font color=#66f899>h</font><font color=#59eca5>m</font><font color=#4cdcb2>e</font><font color=#3fc6bf>l</font><font color=#33accc>l</font><font color=#268ed8>o</font><font color=#196ce5>w</font><font color=#0c49f2>s</font></a></h1>
 
 
 		<script src="libs/jquery-1.9.1/jquery.js"></script>
         <script src="libs/jqueryui-1.10.3/jquery-ui.js"></script>
         <script src="libs/bootstrap.min.js"></script>
-		<style>
-			.stopwatch {
-				display: inline-block;
-				background-color: white;
-				border: 1px solid #eee;
-				padding: 5px;
-				margin: 5px;
-			}
-			.stopwatch span {
-				font-weight: bold;
-				display: block;
-			}
-			.stopwatch a {
-				padding-right: 5px;
-				text-decoration: none;
-			}
-		</style>
         <script src="controls.js"></script>
         <script src="rainbowEngine.js"></script>
 		<script src="progress.js"></script>
 		<script src="libs/stopwatch.js"></script>
-        <LINK href="libs/bootstrap.min.css" rel="stylesheet" type="text/css">
+
 		<link rel="stylesheet" href="piano.css"/>
 		<LINK href="rainbow.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="progress.css"/>
+		<LINK href="libs/bootstrap.min.css" rel="stylesheet" type="text/css">
       
 
-		<div id="timer" class="stopwatch"></div>
+
 		<ul class="nav nav-tabs" id="myTab">
 		  <li class="active"><a href="#colorwalk" onclick="initColor()">Color walk</a></li>
 		  <li><a href="#piano" onclick="initPiano()">Piano</a></li>
@@ -73,6 +57,7 @@
        		</div>
 			<h2>Go to the white square with black color</h2>
 		    <div id="rainbow-status-div"></div>
+			  <div id="timer" class="stopwatch"></div>
 
 
         <script>
@@ -110,8 +95,11 @@
 							complete=true;
 							var statusDiv = document.getElementById("rainbow-status-div");
 							statusDiv.innerHTML ="Congratulations";
-							progress.completeRainbow();
+							debugger;
+							var time = document.getElementById("timer").firstChild.innerHTML;
+							progress.completeRainbow(time);
 							bTimer.stop();
+
 						}
 					}
                 }
@@ -235,6 +223,7 @@
 		      <div class="tab-pane" id="progress">
 				  <img id="progress-rainbow-walk" class="progress-image" src="images/rainbow-walk.png">
 				  <img id="progress-piano" class="progress-image" src="images/piano.png">
+				  <hr>
 				  <img id="progress-icyTower" class="progress-image" src="images/icyTowerLogo.jpg">
 		      </div>
 				<div class="tab-pane" id="tower">
@@ -247,8 +236,19 @@
 
  		<script>
 
-			$('#myTab a').click(function (e) {
-			  e.preventDefault()
+			$('#myTab a').click(function (e)
+			{
+			  e.preventDefault();
+				var value = $(this)[0].firstChild.data;
+				if (value=="Tower")
+				{
+					debugger;
+					var currentProgress = progress.getProgress();
+					if (!(currentProgress.piano && currentProgress.rainbow>0))
+					{
+						return;
+					}
+				}
 			  $(this).tab('show')
 			});
 			localStorage.clear();

@@ -5,7 +5,7 @@ var progress = (function()
 {
     var progressObject = {
       piano: false,
-      rainbow:false,
+      rainbow:0,
       tower: 0
     };
 
@@ -27,13 +27,13 @@ var progress = (function()
         bindCurrentImage(pianoImage, progress.piano);
 
         var rainbowImage = document.getElementById("progress-rainbow-walk");
-        bindCurrentImage(rainbowImage, progress.rainbow);
+        bindCurrentImageWithTitle(rainbowImage, progress.rainbow);
 
         var towerImage = document.getElementById("progress-icyTower");
-        bindTower(towerImage, progress.tower);
+        bindCurrentImageWithTitle(towerImage, progress.tower);
     }
 
-    function bindTower(towerImage, score)
+    function bindCurrentImageWithTitle(towerImage, score)
     {
         if (score==0)
         {
@@ -66,10 +66,10 @@ var progress = (function()
         bindProgress();
     }
 
-    function completeRainbow()
+    function completeRainbow(time)
     {
         var progress = getProgress();
-        progress.rainbow=true;
+        progress.rainbow=time;
         localStorage.setItem('progressObject', JSON.stringify(progress));
         bindProgress();
     }
